@@ -2,7 +2,25 @@
   <header>{{title}}</header>
   <nav></nav>
   <div class="heading"></div>
-  <div class="row">
-  </div>
+  <section>
+    <div class="row">
+      <app-display></app-display>
+    </div>
+    <div class="row">
+      <div class="col-sm-8">
+        <div *ngFor="let value of service.calculatorValues">
+          <app-button [value]=value></app-button>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div *ngFor="let value of service.calculatorOperators">
+          <app-button [value]=value></app-button>
+        </div>
+      </div>
+    </div>
+  </section>
+  <aside>
+
+  </aside>
 </div>
 <footer></footer>
