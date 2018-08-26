@@ -8,6 +8,7 @@ export class CalculatorService {
     public equation = '';
     private calculatorValues: Array<string> = new Array<string>('1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '0', 'del');
     private calculatorOperators: Array<string> = new Array<string>('/', '*', '+', '-', '=');
+    private history: Array<string> = new Array<string>();
 
     constructor() { }
 
@@ -44,14 +45,16 @@ export class CalculatorService {
     }
 
     displayResult(): any {
-        if (this.result !== 0 && this.operator !== '' && this.operator !== '=') {
+        if (this.result !== 0 && this.currentNumber !== '' && this.operator !== '' && this.operator !== '=') {
             const result = this.calculate();
             if (!result) { return; }
+            this.saveHistory();
             this.equation = '';
             this.operator = '=';
-        } else if (this.operator !== '=') {
+        } else if (this.operator !== '=' && this.currentNumber !== '') {
             this.result = parseFloat(this.currentNumber);
             this.currentNumber = '';
+            this.saveHistory();
             this.equation = '';
         }
     }
@@ -61,6 +64,11 @@ export class CalculatorService {
         this.result = 0;
         this.currentNumber = '';
         this.equation = '';
+    }
+
+    private saveHistory(): any {
+        this.equation += ' = ' + this.result;
+        this.history.push(this.equation);
     }
 
     private calculate(): boolean {
