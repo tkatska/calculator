@@ -4,6 +4,9 @@ import { isNumber } from 'util';
 @Injectable({
     providedIn: 'root',
 })
+/**
+ * Calculator service, performed all functionality related to calculator operations
+ */
 export class CalculatorService {
     private operator = '';
     public result = 0;
@@ -15,6 +18,11 @@ export class CalculatorService {
 
     constructor() { }
 
+    /**
+     * Sets operator, in case another operator is already has been set will replace it
+     * if an operation is ready to perform it will first calculate the result and then set new operator
+     * @param operator
+     */
     setOperator(operator: string): boolean {
         if (!this.validateOperator(operator)) {
             return false;
@@ -35,10 +43,6 @@ export class CalculatorService {
         this.operator = operator;
         this.equation += operator;
         return true;
-    }
-
-    removeLastChar() {
-        this.equation.substring(0, this.equation.length - 1);
     }
 
     /**
@@ -63,6 +67,9 @@ export class CalculatorService {
         return true;
     }
 
+    /**
+     * Display result and clear variables
+     */
     displayResult(): any {
         if (this.result !== 0 && this.currentNumber !== '' && this.operator !== '' && this.operator !== '=') {
             const result = this.calculate();
@@ -78,6 +85,9 @@ export class CalculatorService {
         }
     }
 
+    /**
+     * Reset calculator to initial state
+     */
     clear() {
         this.operator = '';
         this.result = 0;

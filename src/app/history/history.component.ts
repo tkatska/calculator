@@ -6,6 +6,9 @@ import { CalculatorService } from '../shared/calculatorService';
   templateUrl: './history.component.html',
   styleUrls: ['./history.component.css']
 })
+/**
+ * Component for the calculator history
+ */
 export class HistoryComponent  {
 
   constructor(private service: CalculatorService) { }

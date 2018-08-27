@@ -6,6 +6,9 @@ import { CalculatorService } from './shared/calculatorService';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
+/**
+ * Calculator app component
+ */
 export class AppComponent {
   title = 'Calculator';
 
