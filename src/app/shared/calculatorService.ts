@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
+import { isNumber } from 'util';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root',
+})
 export class CalculatorService {
     private operator = '';
     public result = 0;
@@ -12,36 +15,52 @@ export class CalculatorService {
 
     constructor() { }
 
-    setOperator(operator: string) {
+    setOperator(operator: string): boolean {
+        if (!this.validateOperator(operator)) {
+            return false;
+        }
         if (this.currentNumber === '' && this.operator !== '=') {
             this.operator = operator;
             this.equation = this.equation.substring(0, this.equation.length - 1) + operator;
-            return;
+            return true;
         }
         if (this.currentNumber !== '' && this.operator !== '') {
             const result = this.calculate();
-            if (!result) { return; }
+            if (!result) { return false; }
         }
         if (this.currentNumber !== '') {
-            this.result = parseFloat(this.currentNumber);
+            this.setresult(this.currentNumber);
             this.currentNumber = '';
         }
         this.operator = operator;
         this.equation += operator;
+        return true;
     }
 
     removeLastChar() {
         this.equation.substring(0, this.equation.length - 1);
     }
 
-    addNumber(number: string) {
-        if (number === '.' && this.getLastChar() === '.' || number === '.' && this.currentNumber.includes('.')) { return; }
+    /**
+     * concatenate provided number to current number
+     * it accepts as parameter any number or colon in a string format
+     * @param number
+     */
+    addNumber(number: string): boolean {
+        if (!this.validateNumber(number)) {
+            return false;
+        }
         if (number === '.' && this.currentNumber === '') {
-            this.currentNumber = '0';
+            this.currentNumber = '0.';
+            number = '0.';
         } else {
             this.currentNumber += number;
+            if (this.operator === '') {
+                this.setresult(this.currentNumber);
+            }
         }
         this.equation += number;
+        return true;
     }
 
     displayResult(): any {
@@ -50,9 +69,9 @@ export class CalculatorService {
             if (!result) { return; }
             this.saveHistory();
             this.equation = '';
-            this.operator = '=';
+            this.operator = '';
         } else if (this.operator !== '=' && this.currentNumber !== '') {
-            this.result = parseFloat(this.currentNumber);
+            this.setresult(this.currentNumber);
             this.currentNumber = '';
             this.saveHistory();
             this.equation = '';
@@ -72,21 +91,25 @@ export class CalculatorService {
     }
 
     private calculate(): boolean {
+        const currentNumber = parseFloat(this.currentNumber);
+        if (isNaN(currentNumber)) {
+            return false;
+        }
         if (this.operator === '/') {
-            if (this.currentNumber === '0') {
+            if (currentNumber === 0) {
                 this.divideByZero();
                 return false;
             }
-            this.result = this.result / parseFloat(this.currentNumber);
+            this.setresult(this.result / currentNumber);
         }
         if (this.operator === '*') {
-            this.result = this.result * parseFloat(this.currentNumber);
+            this.setresult(this.result * currentNumber);
         }
         if (this.operator === '+') {
-            this.result = this.result + parseFloat(this.currentNumber);
+            this.setresult(this.result + currentNumber);
         }
         if (this.operator === '-') {
-            this.result = this.result - parseFloat(this.currentNumber);
+            this.setresult(this.result - currentNumber);
         }
         this.currentNumber = '';
         return true;
@@ -99,5 +122,27 @@ export class CalculatorService {
 
     private getLastChar() {
         return this.currentNumber.substr(this.currentNumber.length - 1);
+    }
+
+    private setresult(number) {
+        this.result = parseFloat(number);
+    }
+
+    private validateNumber(number: string): any {
+        if (number === '.') {
+            if (this.getLastChar() === '.' || this.currentNumber.includes('.')) {
+                return false;
+            }
+            return true;
+        }
+        const floatNum = parseFloat(number);
+        if (isNaN(floatNum)) {
+            return false;
+        }
+        return isNumber(floatNum);
+    }
+
+    private validateOperator(operator: string): any {
+        return this.calculatorOperators.includes(operator);
     }
 }

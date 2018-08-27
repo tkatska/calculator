@@ -14,10 +14,13 @@ import { CalculatorService } from './shared/calculatorService';
     DisplayComponent,
     ButtonComponent
   ],
+  exports: [AppComponent],
   imports: [
-    BrowserModule
+    BrowserModule],
+  providers: [
+    { provide: CalculatorService },
+    CalculatorService
   ],
-  providers: [CalculatorService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

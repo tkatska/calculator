@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CalculatorService } from '../shared/calculatorService';
 
 @Component({
@@ -6,11 +6,8 @@ import { CalculatorService } from '../shared/calculatorService';
   templateUrl: './history.component.html',
   styleUrls: ['./history.component.css']
 })
-export class HistoryComponent implements OnInit {
+export class HistoryComponent  {
 
   constructor(private service: CalculatorService) { }
-
-  ngOnInit() {
-  }
 
 }
