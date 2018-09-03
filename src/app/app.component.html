@@ -1,8 +1,38 @@
-<div class="wrapper container">
-  <header>{{title}}</header>
-  <nav></nav>
+<div class="container">
   <div class="heading"></div>
-  <div class="row">
-  </div>
+  <div class="container">
+    <div class="row justify-content-md-center">
+
+      <div class="col-8 col-sm-8 col-xs-12 bg-dark">
+        <div class="row">
+          <div class="col-12 col-sm-12 bg-dark">
+            <app-display></app-display>
+
+            <div class="row">
+
+              <div class="col-xs-10 calculatorValues">
+                <div *ngFor="let value of service.calculatorValues">
+                  <app-button [value]=value></app-button>
+                </div>
+              </div>
+
+              <div class="col-xs-2">
+                <div *ngFor="let value of service.calculatorOperators">
+                  <app-button [value]=value></app-button>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+
+      <div class="col-4 col-sm-4 col-xs-12 bg-dark">
+        <div class="col col-2 bg-secondary displayText">
+          <app-history></app-history>
+        </div>
+      </div>
+    </div>
+
 </div>
-<footer></footer>
+</div>
